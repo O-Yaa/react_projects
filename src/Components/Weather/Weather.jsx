@@ -4,8 +4,6 @@ import "./Weather.css";
 export default function Weather() {
   return (
     <div className="Weather">
-      <div>This is to test my Weather App</div>
-
       <form>
         <div className="row">
           <div className="col-9">

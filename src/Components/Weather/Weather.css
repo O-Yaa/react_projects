@@ -1,3 +1,11 @@
 .Weather {
   border: 1px solid #837b7bb4;
+  margin: 21px auto;
+  padding: 20px;
+  border-radius: 4px;
+  font-family: Calibri;
+}
+
+.Weather form {
+  margin-bottom: 25px;
 }
