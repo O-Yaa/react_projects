@@ -1,0 +1,8 @@
+.WeatherInfo li {
+  list-style: none;
+}
+
+.Icon {
+  width: 100px;
+  margin: auto;
+}

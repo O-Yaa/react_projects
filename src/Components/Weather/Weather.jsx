@@ -1,15 +1,17 @@
 import React, { useState } from "react";
+import WeatherInfo from "../Info/WeatherInfo";
+
+import styles from "./Weather.module.css";
 import axios from "axios";
-import "./Weather.css";
 
 export default function Weather(props) {
-  const [weatherData, setWeatherData] = useState({});
+  const [weatherData, setWeatherData] = useState();
   const [city, setCity] = useState(props.defaultCity);
 
   function handleResponse(response) {
-    const { coord: coordinates, main, dt, weather, wind, name } = response.data;
+    const { coord: coordinates, main, weather, wind, name } = response.data;
 
-    const formattedDate = new Date(dt * 1000);
+    const dateTime = new Date();
 
     const dataObject = {
       ready: true,
@@ -17,7 +19,7 @@ export default function Weather(props) {
       temperature: main.temp,
       humidity: main.humidity,
       description: weather[0].description,
-      date: formattedDate, //create a component with name "formattedDate"
+      date: dateTime,
       icon: weather[0].icon,
       wind: wind.speed,
       city: name, // to access the name of the city
@@ -35,35 +37,42 @@ export default function Weather(props) {
   }
 
   function search() {
+    console.log("search");
     const apiKey = process.env.REACT_APP_API_KEY;
     const apiUrl = `${process.env.REACT_APP_BASE_URL}?q=${city}&appid=${apiKey}&units=metric`;
-    axios.get(apiUrl).then(handleResponse);
+    axios
+      .get(apiUrl)
+      .then(handleResponse)
+      .catch((e) => console.log(e));
+    console.log("searchEnd");
   }
+  console.log("weatherData :", weatherData);
 
-  if (weatherData) {
-    return (
-      <div className="Weather">
-        <form onSubmit={handleSubmit}>
-          <div className="row">
-            <div className="col-9">
-              <input
-                type="search"
-                placeholder="Enter city.."
-                autoFocus="on"
-                className="form-control"
-              ></input>
-            </div>
-            <div className="col-3">
-              <input
-                onChange={handleCityChange}
-                type="submit"
-                value="Search"
-                className="btn btn-primary w-100"
-              ></input>
-            </div>
+  return (
+    <div className={styles.Weather}>
+      <form onSubmit={handleSubmit}>
+        <div className="row">
+          <div className="col-9">
+            <input
+              onChange={handleCityChange}
+              type="search"
+              placeholder="Enter city.."
+              autoFocus="on"
+              className="form-control"
+            ></input>
           </div>
-        </form>
-      </div>
-    );
-  }
+          <div className="col-3">
+            <input
+              type="submit"
+              value="Search"
+              className="btn btn-primary w-100"
+            ></input>
+          </div>
+        </div>
+      </form>
+      {!weatherData && <p>No data to show</p>}
+
+      {weatherData && <WeatherInfo {...weatherData} />}
+    </div>
+  );
 }
