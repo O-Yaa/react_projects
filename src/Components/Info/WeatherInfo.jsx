@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import dayjs from "dayjs";
 import WeatherIcons from "../utilities/WeatherIcons";
 import styles from "./WeatherInfo.module.css";
@@ -6,22 +6,31 @@ import utc from "dayjs/plugin/utc";
 dayjs.extend(utc);
 
 export default function WeatherInfo(props) {
+  const [unit, setUnit] = useState("C");
   console.log(props);
   const date = dayjs.utc(props.date);
   // Make sure this prop name matches the data structure received
   const icon = props.icon;
-  console.log(icon);
+  const temperature = Math.floor(
+    unit === "C" ? props.temperature : (props.temperature * 9) / 5 + 32
+  );
+
+  const handleUnitChange = (event) => {
+    setUnit(event.target.value); // Update the unit state based on selection
+  };
 
   return (
     <div className={styles.WeatherInfo}>
       <img src={WeatherIcons[icon]} className={styles.Icon} alt="description" />
 
-      <h1>{props.city}</h1>
+      <h1 className={styles.City}>{props.city}</h1>
       <div className="Information">
-        <p>{date.local().format("MMM D, YYYY")}</p>
-        <p>{date.local().format("ddd HH:mm")}</p>
+        <ul className={styles.Date}>
+          <li>{date.local().format("MMM D, YYYY")}</li>
+          <li>{date.local().format("ddd HH:mm")}</li>
+        </ul>
 
-        <ul>
+        <ul className={styles.Description}>
           <li className="text-capitalize">{props.description}</li>
         </ul>
       </div>
@@ -30,8 +39,16 @@ export default function WeatherInfo(props) {
         <div className="col-6">
           <div className="d-flex">
             <div>
-              {Math.floor(props.temperature)}
-              <a href="./">°C | °F</a>
+              <span className={styles.Temperature}>{temperature}°</span>
+
+              <select
+                value={unit}
+                onChange={handleUnitChange}
+                className={styles.temperatureSelect}
+              >
+                <option value="C">C</option>
+                <option value="F">F</option>
+              </select>
             </div>
           </div>
         </div>
