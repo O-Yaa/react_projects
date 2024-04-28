@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import dayjs from "dayjs";
 import WeatherIcons from "../utilities/WeatherIcons";
+
 import styles from "./WeatherInfo.module.css";
 import utc from "dayjs/plugin/utc";
 dayjs.extend(utc);
@@ -22,22 +23,18 @@ export default function WeatherInfo(props) {
   return (
     <div className={styles.WeatherInfo}>
       <img src={WeatherIcons[icon]} className={styles.Icon} alt="description" />
-
       <h1 className={styles.City}>{props.city}</h1>
+
       <div className="Information">
         <ul className={styles.Date}>
           <li>{date.local().format("MMM D, YYYY")}</li>
           <li>{date.local().format("ddd HH:mm")}</li>
         </ul>
-
-        <ul className={styles.Description}>
-          <li className="text-capitalize">{props.description}</li>
-        </ul>
       </div>
 
-      <div className="row mt-5">
+      <div className="row">
         <div className="col-6">
-          <div className="d-flex">
+          <div>
             <div>
               <span className={styles.Temperature}>{temperature}°</span>
 
@@ -53,7 +50,8 @@ export default function WeatherInfo(props) {
           </div>
         </div>
         <div className="col-6">
-          <ul>
+          <ul className={styles.Description}>
+            <li className="text-capitalize">{props.description}</li>
             <li>Humidity: {props.humidity}%</li>
             <li>Wind: {Math.floor(props.wind)} km/h</li>
           </ul>

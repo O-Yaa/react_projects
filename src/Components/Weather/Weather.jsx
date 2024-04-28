@@ -43,9 +43,14 @@ export default function Weather(props) {
     axios
       .get(apiUrl)
       .then(handleResponse)
-      .catch((e) => console.log(e));
+      .catch((e) => console.log(e))
+      .then(() => {
+        setCity(""); // Corrected: Clear the input field after search
+      });
+
     console.log("searchEnd");
   }
+
   console.log("weatherData :", weatherData);
 
   return (
@@ -59,6 +64,7 @@ export default function Weather(props) {
               placeholder="Enter city.."
               autoFocus="on"
               className="form-control"
+              value={city}
             ></input>
           </div>
           <div className="col-3">

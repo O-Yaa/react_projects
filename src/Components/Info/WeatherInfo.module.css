@@ -1,5 +1,6 @@
 .WeatherInfo li {
   list-style: none;
+  display: flex;
 }
 
 .Icon {
